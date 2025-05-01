@@ -13,7 +13,7 @@ using Microsoft.Extensions.Logging;
 namespace ApiAuth.Controllers
 {
     [ApiController]
-    public class HomeController : ControllerBase
+    public class UserController : ControllerBase
     {
         //Para autorizar, colocar o token no Authtorization/Bearer do postman, swagger, ou onde a api for exposta.
 
