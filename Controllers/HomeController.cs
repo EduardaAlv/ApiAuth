@@ -2,36 +2,37 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using ApiAuth.Models;
+using ApiAuth.Repositories;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
 namespace ApiAuth.Controllers
 {
-    public class HomeController : Controller
+    [ApiController]
+    public class HomeController : ControllerBase
     {
-        private readonly ILogger<HomeController> _logger;
+        [HttpGet]
+        [Route("anonymous")]
+        [AllowAnonymous]
+        public string Anonymous() => "Rota que não exige auth";
 
-        public HomeController(ILogger<HomeController> logger)
-        {
-            _logger = logger;
-        }
+        [HttpGet]
+        [Route("authenticated")]
+        [Authorize]
+        public string Authenticated() => "Rota que exige auth";
 
-        public IActionResult Index()
-        {
-            return View();
-        }
+        [HttpGet]
+        [Route("employee")]
+        [Authorize(Roles = "employee,manager")]
+        public string Employee() => "Api autorizada para empregado e gerente, filtrado pelo Roles";
 
-        public IActionResult Privacy()
-        {
-            return View();
-        }
-
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        }
+        [HttpGet]
+        [Route("manager")]
+        [Authorize(Roles = "manager")]
+        public string Manager() => "Api autorizada somente para empregado e gerente, filtrado pelo Roles";
     }
 }
