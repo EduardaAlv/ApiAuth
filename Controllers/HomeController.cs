@@ -15,6 +15,8 @@ namespace ApiAuth.Controllers
     [ApiController]
     public class HomeController : ControllerBase
     {
+        //Para autorizar, colocar o token no Authtorization/Bearer do postman, swagger, ou onde a api for exposta.
+
         [HttpGet]
         [Route("anonymous")]
         [AllowAnonymous]
